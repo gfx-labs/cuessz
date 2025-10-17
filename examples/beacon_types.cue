@@ -12,13 +12,6 @@ beaconChainTypes: cuessz.#Schema & {
 		authors: ["Ethereum Foundation"]
 	}
 
-	extensions: {
-		go: {
-			package:    "consensus"
-			importPath: "github.com/gfx-labs/cuessz/consensus"
-		}
-	}
-
 	types: {
 		// ===== Basic Types =====
 

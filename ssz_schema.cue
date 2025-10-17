@@ -6,7 +6,6 @@ package cuessz
 
 // TypeDefinition is a single structure that represents all possible SSZ types.
 // The 'kind' field determines which other fields are populated.
-// This design avoids union types which don't translate well to Go.
 #TypeDefinition: {
 	// Discriminator field - determines which fields below are relevant
 	kind: "basic" | "container" | "vector" | "list" | "union" | "bitvector" | "bitlist"
@@ -32,9 +31,6 @@ package cuessz
 	// Optional description for documentation
 	description?: string
 
-	// Language-specific extensions
-	extensions?: #TypeExtensions
-
 	// Progressive container support (EIP-7495)
 	// Indicates if this is a stable container that supports future extensions
 	stable?: bool
@@ -56,38 +52,6 @@ package cuessz
 	description?: string
 	// Optional field (for progressive/stable containers per EIP-7495)
 	optional?: bool
-	// Language-specific extensions
-	extensions?: #TypeExtensions
-}
-
-// Schema-level Go extensions for package configuration
-#GoSchemaExtension: {
-	// Package name for generated Go code
-	package?: string
-	// Import path for the package
-	importPath?: string
-	// Import alias for external packages
-	alias?: string
-}
-
-// Type-level Go extensions for individual types and fields
-#GoTypeExtension: {
-	// Custom type name (if different from schema name)
-	name?: string
-	// Import package for external types (used with name)
-	import?: string
-	// Additional struct tags
-	tags?: {[string]: string}
-}
-
-// Schema-level extensions for language-specific code generation
-#SchemaExtensions: {
-	go?: #GoSchemaExtension
-}
-
-// Type-level extensions for language-specific code generation
-#TypeExtensions: {
-	go?: #GoTypeExtension
 }
 
 // Schema represents a collection of named type definitions
@@ -104,7 +68,4 @@ package cuessz
 		description?: string
 		authors?: [...string]
 	}
-
-	// Language-specific extensions for code generation
-	extensions?: #SchemaExtensions
 }
