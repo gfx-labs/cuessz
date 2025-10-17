@@ -38,6 +38,14 @@ package cuessz
 	// Progressive container support (EIP-7495)
 	// Indicates if this is a stable container that supports future extensions
 	stable?: bool
+
+	// Active fields pattern for progressive containers (EIP-7495)
+	// Specifies which merkle tree positions contain actual fields (0 = skip, 1 = field present)
+	// - Length can be up to 256
+	// - Count of 1s must equal number of fields in the container
+	// - Last element must be 1 if present (cannot end in 0)
+	// Example: [1, 0, 1] means field 0 at merkle index 0, field 1 at merkle index 2
+	active_fields?: [...0 | 1]
 }
 
 // Field represents a named field in a container

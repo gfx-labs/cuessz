@@ -12,10 +12,49 @@ import "github.com/gfx-labs/cuessz"
 progressiveExample: cuessz.#Schema & {
 	version: "1.0.0"
 	types: {
-		// Basic stable container with optional fields
+		// Square shape with side and color
+		Square: {
+			kind:          "container"
+			stable:        true
+			active_fields: [1, 0, 1]  // Field at merkle index 0, skip 1, field at 2
+			description:   "A square with side length and color"
+			fields: [
+				{
+					name: "side"
+					type: {kind: "basic", type: "uint16"}
+				},
+				{
+					name: "color"
+					type: {kind: "basic", type: "uint8"}
+				},
+			]
+		}
+
+		// Circle shape with radius and color
+		Circle: {
+			kind:          "container"
+			stable:        true
+			active_fields: [0, 1, 1]  // Skip 0, field at merkle index 1, field at 2
+			description:   "A circle with radius and color"
+			fields: [
+				{
+					name: "radius"
+					type: {kind: "basic", type: "uint16"}
+				},
+				{
+					name: "color"
+					type: {kind: "basic", type: "uint8"}
+				},
+			]
+		}
+
+		// Basic stable container (V1 of execution payload header)
 		ExecutionPayloadHeaderV1: {
 			kind:   "container"
-			stable: true  // This is a stable container
+			stable: true
+			active_fields: [
+				1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  // All 15 V1 fields active
+			]
 			fields: [
 				{
 					name: "parent_hash"
@@ -120,10 +159,14 @@ progressiveExample: cuessz.#Schema & {
 			]
 		}
 
-		// Extended version with additional optional fields
+		// Extended version with additional fields (V2)
 		ExecutionPayloadHeaderV2: {
 			kind:   "container"
 			stable: true
+			active_fields: [
+				1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  // All 15 V1 fields
+				1, 1,  // Plus 2 new V2 fields
+			]
 			fields: [
 				// All V1 fields...
 				{
@@ -226,25 +269,24 @@ progressiveExample: cuessz.#Schema & {
 						elem: {kind: "basic", type: "uint8"}
 					}
 				},
-				// New optional fields in V2
+				// New fields in V2
 				{
-					name:     "blob_gas_used"
-					optional: true  // Optional field for forward compatibility
+					name: "blob_gas_used"
 					type: {kind: "basic", type: "uint64"}
 				},
 				{
-					name:     "excess_blob_gas"
-					optional: true
+					name: "excess_blob_gas"
 					type: {kind: "basic", type: "uint64"}
 				},
 			]
 		}
 
-		// Simple example of a stable container
-		ValidatorRecord: {
-			kind:   "container"
-			stable: true
-			description: "Stable container that can be extended in future forks"
+		// Validator record V1 (pre-EIP-7251)
+		ValidatorRecordV1: {
+			kind:          "container"
+			stable:        true
+			active_fields: [1, 1, 1, 1, 1, 1, 1]  // All 7 original fields
+			description:   "Validator record before EIP-7251"
 			fields: [
 				{
 					name: "pubkey"
@@ -282,11 +324,55 @@ progressiveExample: cuessz.#Schema & {
 					name: "withdrawable_epoch"
 					type: {kind: "basic", type: "uint64"}
 				},
-				// Future optional fields can be added here
+			]
+		}
+
+		// Validator record V2 (with EIP-7251)
+		ValidatorRecordV2: {
+			kind:          "container"
+			stable:        true
+			active_fields: [1, 1, 1, 1, 1, 1, 1, 1]  // 7 original + 1 new field
+			description:   "Validator record with EIP-7251: Increase the MAX_EFFECTIVE_BALANCE"
+			fields: [
 				{
-					name:     "max_effective_balance"
-					optional: true
+					name: "pubkey"
+					type: {
+						kind:   "vector"
+						length: 48
+						elem: {kind: "basic", type: "uint8"}
+					}
+				},
+				{
+					name: "withdrawal_credentials"
+					type: {
+						kind:   "vector"
+						length: 32
+						elem: {kind: "basic", type: "uint8"}
+					}
+				},
+				{
+					name: "effective_balance"
 					type: {kind: "basic", type: "uint64"}
+				},
+				{
+					name: "slashed"
+					type: {kind: "basic", type: "bool"}
+				},
+				{
+					name: "activation_epoch"
+					type: {kind: "basic", type: "uint64"}
+				},
+				{
+					name: "exit_epoch"
+					type: {kind: "basic", type: "uint64"}
+				},
+				{
+					name: "withdrawable_epoch"
+					type: {kind: "basic", type: "uint64"}
+				},
+				{
+					name:        "max_effective_balance"
+					type:        {kind: "basic", type: "uint64"}
 					description: "EIP-7251: Increase the MAX_EFFECTIVE_BALANCE"
 				},
 			]
