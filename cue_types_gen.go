@@ -55,6 +55,9 @@ type Field struct {
 	// Optional description for documentation
 	Description string `json:"description,omitempty"`
 
+	// Optional field (for progressive/stable containers per EIP-7495)
+	Optional bool `json:"optional,omitempty"`
+
 	// Language-specific extensions
 	Extensions TypeExtensions `json:"extensions,omitempty"`
 }
