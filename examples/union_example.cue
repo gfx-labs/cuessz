@@ -14,90 +14,121 @@ unionTypes: cuessz.#Schema & {
 	types: {
 		// Basic types
 		Amount: {
-			kind: "basic"
 			type: "uint64"
 		}
 
 		Hash: {
-			kind:   "vector"
-			length: 32
-			elem: {
-				kind: "basic"
-				type: "uint8"
-			}
+			type: "vector"
+			size: 32
+			children: [
+				{
+					name: "element"
+					type: {
+						type: "uint8"
+					}
+				},
+			]
 		}
 
 		// Different transaction types
 		TransferTransaction: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "from"
-					type: Hash
+					type: {
+						type: "ref"
+						ref:  "Hash"
+					}
 				},
 				{
 					name: "to"
-					type: Hash
+					type: {
+						type: "ref"
+						ref:  "Hash"
+					}
 				},
 				{
 					name: "amount"
-					type: Amount
+					type: {
+						type: "ref"
+						ref:  "Amount"
+					}
 				},
 			]
 		}
 
 		CreateContractTransaction: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "from"
-					type: Hash
+					type: {
+						type: "ref"
+						ref:  "Hash"
+					}
 				},
 				{
 					name: "code"
 					type: {
-						kind:      "list"
-						maxLength: 24576
-						elem: {
-							kind: "basic"
-							type: "uint8"
-						}
+						type:  "list"
+						limit: 24576
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "uint8"
+								}
+							},
+						]
 					}
 				},
 				{
 					name: "initial_value"
-					type: Amount
+					type: {
+						type: "ref"
+						ref:  "Amount"
+					}
 				},
 			]
 		}
 
 		CallContractTransaction: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "from"
-					type: Hash
+					type: {
+						type: "ref"
+						ref:  "Hash"
+					}
 				},
 				{
 					name: "contract"
-					type: Hash
+					type: {
+						type: "ref"
+						ref:  "Hash"
+					}
 				},
 				{
 					name: "method_id"
 					type: {
-						kind: "basic"
 						type: "uint32"
 					}
 				},
 				{
 					name: "params"
 					type: {
-						kind:      "list"
-						maxLength: 1024
-						elem: {
-							kind: "basic"
-							type: "uint8"
-						}
+						type:  "list"
+						limit: 1024
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "uint8"
+								}
+							},
+						]
 					}
 				},
 			]
@@ -105,39 +136,63 @@ unionTypes: cuessz.#Schema & {
 
 		// Union type - a transaction can be one of several types
 		Transaction: {
-			kind: "union"
-			description: "A transaction can be a transfer, contract creation, or contract call"
-			options: [
-				TransferTransaction,
-				CreateContractTransaction,
-				CallContractTransaction,
+			type: "union"
+			children: [
+				{
+					name: "TransferTransaction"
+					type: {
+						type: "ref"
+						ref:  "TransferTransaction"
+					}
+				},
+				{
+					name: "CreateContractTransaction"
+					type: {
+						type: "ref"
+						ref:  "CreateContractTransaction"
+					}
+				},
+				{
+					name: "CallContractTransaction"
+					type: {
+						type: "ref"
+						ref:  "CallContractTransaction"
+					}
+				},
 			]
-			// Note: Selector type (uint8 for max 256 variants) would be handled
-			// by code generators, not defined in the schema
 		}
 
 		// You can use the union in other types
 		Block: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "number"
 					type: {
-						kind: "basic"
 						type: "uint64"
 					}
 				},
 				{
 					name: "parent_hash"
-					type: Hash
+					type: {
+						type: "ref"
+						ref:  "Hash"
+					}
 				},
 				{
 					name: "transactions"
 					type: {
-						kind:      "list"
-						maxLength: 1000
-						// Type-safe reference to the union type!
-						elem: Transaction
+						type:  "list"
+						limit: 1000
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Transaction"
+								}
+							},
+						]
 					}
 				},
 			]

@@ -14,49 +14,52 @@ simpleTypes: cuessz.#Schema & {
 	types: {
 		// Basic unsigned integer
 		Amount: {
-			kind: "basic"
 			type: "uint64"
 		}
 
 		// Fixed-size byte array (32 bytes)
 		Hash: {
-			kind:   "vector"
-			length: 32
-			elem: {
-				kind: "basic"
-				type: "uint8"
-			}
+			type: "vector"
+			size: 32
+			children: [
+				{
+					name: "element"
+					type: {
+						type: "uint8"
+					}
+				},
+			]
 		}
 
 		// Simple container (like a struct)
 		Person: {
-			kind:        "container"
-			description: "A person with name and age"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "name"
 					type: {
-						kind:      "list"
-						maxLength: 64
-						elem: {
-							kind: "basic"
-							type: "uint8"
-						}
+						type:  "list"
+						limit: 64
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "uint8"
+								}
+							},
+						]
 					}
-					description: "UTF-8 encoded name (max 64 bytes)"
 				},
 				{
 					name: "age"
 					type: {
-						kind: "basic"
 						type: "uint8"
 					}
 				},
 				{
 					name: "active"
 					type: {
-						kind: "basic"
-						type: "bool"
+						type: "boolean"
 					}
 				},
 			]
@@ -64,28 +67,32 @@ simpleTypes: cuessz.#Schema & {
 
 		// Container with references to other types (type-safe!)
 		Transaction: {
-			kind:        "container"
-			description: "A simple transaction"
-			fields: [
+			type: "container"
+			children: [
 				{
-					name:        "from"
-					type:        Hash
-					description: "Sender address hash"
+					name: "from"
+					type: {
+						type: "ref"
+						ref:  "Hash"
+					}
 				},
 				{
-					name:        "to"
-					type:        Hash
-					description: "Recipient address hash"
+					name: "to"
+					type: {
+						type: "ref"
+						ref:  "Hash"
+					}
 				},
 				{
-					name:        "amount"
-					type:        Amount
-					description: "Transfer amount"
+					name: "amount"
+					type: {
+						type: "ref"
+						ref:  "Amount"
+					}
 				},
 				{
 					name: "nonce"
 					type: {
-						kind: "basic"
 						type: "uint64"
 					}
 				},
@@ -94,61 +101,83 @@ simpleTypes: cuessz.#Schema & {
 
 		// Variable-length list of transactions
 		TransactionList: {
-			kind:        "list"
-			maxLength:   100
-			description: "List of up to 100 transactions"
-			elem: Transaction
+			type:  "list"
+			limit: 100
+			children: [
+				{
+					name: "element"
+					type: {
+						type: "ref"
+						ref:  "Transaction"
+					}
+				},
+			]
 		}
 
 		// Fixed-length vector of hashes
 		MerkleProof: {
-			kind:        "vector"
-			length:      8
-			description: "Merkle proof with 8 hashes"
-			elem: Hash
+			type: "vector"
+			size: 8
+			children: [
+				{
+					name: "element"
+					type: {
+						type: "ref"
+						ref:  "Hash"
+					}
+				},
+			]
 		}
 
 		// Bitlist example
 		Participants: {
-			kind:        "bitlist"
-			maxLength:   256
-			description: "Bitlist of up to 256 participants"
+			type:  "bitlist"
+			limit: 256
 		}
 
 		// Bitvector example
 		Flags: {
-			kind:        "bitvector"
-			length:      8
-			description: "8 boolean flags"
+			type: "bitvector"
+			size: 8
 		}
 
 		// Complex container combining multiple types
 		Block: {
-			kind:        "container"
-			description: "A block containing transactions"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "number"
 					type: {
-						kind: "basic"
 						type: "uint64"
 					}
 				},
 				{
 					name: "parent_hash"
-					type: Hash
+					type: {
+						type: "ref"
+						ref:  "Hash"
+					}
 				},
 				{
 					name: "transactions"
-					type: TransactionList
+					type: {
+						type: "ref"
+						ref:  "TransactionList"
+					}
 				},
 				{
 					name: "merkle_proof"
-					type: MerkleProof
+					type: {
+						type: "ref"
+						ref:  "MerkleProof"
+					}
 				},
 				{
 					name: "participation"
-					type: Participants
+					type: {
+						type: "ref"
+						ref:  "Participants"
+					}
 				},
 			]
 		}

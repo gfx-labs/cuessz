@@ -14,65 +14,85 @@ Zoo: cuessz.#Schema & {
 	types: {
 		// Basic type aliases for clarity
 		bytes32: {
-			kind:   "vector"
-			length: 32
-			elem: {
-				kind: "basic"
-				type: "uint8"
-			}
+			type: "vector"
+			size: 32
+			children: [
+				{
+					name: "element"
+					type: {
+						type: "uint8"
+					}
+				},
+			]
 		}
 
 		bytes48: {
-			kind:   "vector"
-			length: 48
-			elem: {
-				kind: "basic"
-				type: "uint8"
-			}
+			type: "vector"
+			size: 48
+			children: [
+				{
+					name: "element"
+					type: {
+						type: "uint8"
+					}
+				},
+			]
 		}
 
 		bytes96: {
-			kind:   "vector"
-			length: 96
-			elem: {
-				kind: "basic"
-				type: "uint8"
-			}
+			type: "vector"
+			size: 96
+			children: [
+				{
+					name: "element"
+					type: {
+						type: "uint8"
+					}
+				},
+			]
 		}
 
 		// ClockInRecords tracks when animals check in at the zoo
 		ClockInRecords: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "epoch"
-					type: {kind: "basic", type: "uint64"}
+					type: {
+						type: "uint64"
+					}
 					description: "Timestamp epoch of clock-in"
 				},
 				{
-					name:        "bio_id_scan"
-					type:        bytes32
+					name: "bio_id_scan"
+					type: {
+						type: "ref"
+						ref:  "bytes32"
+					}
 					description: "Biometric ID scan hash"
 				},
 				{
 					name: "poo_log_bits"
 					type: {
-						kind:      "bitlist"
-						maxLength: 32
+						type:  "bitlist"
+						limit: 32
 					}
 					description: "Log of bathroom activities (bitlist)"
 				},
 				{
 					name: "wash_log_bits"
 					type: {
-						kind:   "bitvector"
-						length: 32
+						type: "bitvector"
+						size: 32
 					}
 					description: "Log of hand-washing activities (bitvector)"
 				},
 				{
-					name:        "signature"
-					type:        bytes96
+					name: "signature"
+					type: {
+						type: "ref"
+						ref:  "bytes96"
+					}
 					description: "Signature attesting to the record"
 				},
 			]
@@ -80,30 +100,46 @@ Zoo: cuessz.#Schema & {
 
 		// Animal represents a zoo animal with various attributes
 		Animal: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
-					name:        "id_hash"
-					type:        bytes32
+					name: "id_hash"
+					type: {
+						type: "ref"
+						ref:  "bytes32"
+					}
 					description: "Unique identifier hash for the animal"
 				},
 				{
-					name:        "public_key"
-					type:        bytes48
+					name: "public_key"
+					type: {
+						type: "ref"
+						ref:  "bytes48"
+					}
 					description: "Animal's public key"
 				},
 				{
 					name: "clock_in_records"
 					type: {
-						kind:      "list"
-						maxLength: 4294967296 // 2^32
-						elem:      ClockInRecords
+						type:  "list"
+						limit: 4294967296 // 2^32
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "ClockInRecords"
+								}
+							},
+						]
 					}
 					description: "List of all clock-in records"
 				},
 				{
 					name: "vaccinated"
-					type: {kind: "basic", type: "bool"}
+					type: {
+						type: "boolean"
+					}
 					description: "Vaccination status"
 				},
 			]
@@ -111,14 +147,22 @@ Zoo: cuessz.#Schema & {
 
 		// Zoo contains a fixed number of animals
 		Zoo: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "animals"
 					type: {
-						kind:   "vector"
-						length: 3
-						elem:   Animal
+						type: "vector"
+						size: 3
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Animal"
+								}
+							},
+						]
 					}
 					description: "Fixed vector of 3 animals"
 				},

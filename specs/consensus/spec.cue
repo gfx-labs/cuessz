@@ -9,554 +9,701 @@ BeaconChain: cuessz.#Schema & {
 		authors: ["gfx labs"]
 	}
 
-	extensions: {
-		go: {
-			package:    "consensus"
-			importPath: "github.com/gfx-labs/cuessz/specs/consensus"
-		}
-	}
-
 	types: {
 		// ===== Basic Types =====
 
 		Root: {
-			kind:   "vector"
-			length: 32
-			elem: {
-				kind: "basic"
-				type: "uint8"
-			}
+			type:   "vector"
+			size: 32
+			children: [
+				{
+					name: "element"
+					type: {
+						type: "uint8"
+					}
+				},
+			]
 		}
 
 		Signature: {
-			kind:   "vector"
-			length: 96
-			elem: {
-				kind: "basic"
-				type: "uint8"
-			}
+			type:   "vector"
+			size: 96
+			children: [
+				{
+					name: "element"
+					type: {
+						type: "uint8"
+					}
+				},
+			]
 		}
 
 		BLSPubkey: {
-			kind:   "vector"
-			length: 48
-			elem: {
-				kind: "basic"
-				type: "uint8"
-			}
+			type:   "vector"
+			size: 48
+			children: [
+				{
+					name: "element"
+					type: {
+						type: "uint8"
+					}
+				},
+			]
 		}
 
 		Uint256: {
-			kind:   "vector"
-			length: 32
-			elem: {
-				kind: "basic"
-				type: "uint8"
-			}
+			type:   "vector"
+			size: 32
+			children: [
+				{
+					name: "element"
+					type: {
+						type: "uint8"
+					}
+				},
+			]
 		}
 
 		// ===== Core Types =====
 
 		Checkpoint: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "epoch"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 			]
 		}
 
 		AttestationData: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "beacon_block_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "source"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 				{
 					name: "target"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 			]
 		}
 
 		Attestation: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "aggregation_bits"
-					type: {kind: "bitlist", maxLength: 2048}
+					type: {type: "bitlist", limit: 2048}
 				},
 				{
 					name: "data"
-					type: AttestationData
+					type: {
+						type: "ref"
+						ref:  "AttestationData"
+					}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		AggregateAndProof: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "aggregator_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "aggregate"
-					type: Attestation
+					type: {
+						type: "ref"
+						ref:  "Attestation"
+					}
 				},
 				{
 					name: "selection_proof"
-					type: {kind: "vector", length: 96, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 96, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 			]
 		}
 
 		SignedAggregateAndProof: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "message"
-					type: AggregateAndProof
+					type: {
+						type: "ref"
+						ref:  "AggregateAndProof"
+					}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		DepositData: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "pubkey"
-					type: BLSPubkey
+					type: {
+						type: "ref"
+						ref:  "BLSPubkey"
+					}
 				},
 				{
 					name: "withdrawal_credentials"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "amount"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		Deposit: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "proof"
 					type: {
-						kind:   "vector"
-						length: 33
-						elem: {
-							kind:   "vector"
-							length: 32
-							elem: {kind: "basic", type: "uint8"}
-						}
+						type:   "vector"
+						size: 33
+						children: [
+							{
+								name: "element"
+								type: {
+									type:   "vector"
+									size: 32
+									children: [
+										{
+											name: "element"
+											type: {
+												type: "uint8"
+											}
+										},
+									]
+								}
+							},
+						]
 					}
 				},
 				{
 					name: "data"
-					type: DepositData
+					type: {
+						type: "ref"
+						ref:  "DepositData"
+					}
 				},
 			]
 		}
 
 		DepositMessage: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "pubkey"
-					type: BLSPubkey
+					type: {
+						type: "ref"
+						ref:  "BLSPubkey"
+					}
 				},
 				{
 					name: "withdrawal_credentials"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "amount"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
 
 		IndexedAttestation: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "attesting_indices"
-					type: {kind: "list", maxLength: 2048, elem: {kind: "basic", type: "uint64"}}
+					type: {type: "list", limit: 2048, children: [{name: "element", type: {type: "uint64"}},]}
 				},
 				{
 					name: "data"
-					type: AttestationData
+					type: {
+						type: "ref"
+						ref:  "AttestationData"
+					}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		PendingAttestation: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "aggregation_bits"
-					type: {kind: "bitlist", maxLength: 2048}
+					type: {type: "bitlist", limit: 2048}
 				},
 				{
 					name: "data"
-					type: AttestationData
+					type: {
+						type: "ref"
+						ref:  "AttestationData"
+					}
 				},
 				{
 					name: "inclusion_delay"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
 
 		Fork: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "previous_version"
-					type: {kind: "vector", length: 4, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 4, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "current_version"
-					type: {kind: "vector", length: 4, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 4, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "epoch"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
 
 		Validator: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "pubkey"
-					type: BLSPubkey
+					type: {
+						type: "ref"
+						ref:  "BLSPubkey"
+					}
 				},
 				{
 					name: "withdrawal_credentials"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "effective_balance"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "slashed"
-					type: {kind: "basic", type: "bool"}
+					type: {type: "boolean"}
 				},
 				{
 					name: "activation_eligibility_epoch"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "activation_epoch"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "exit_epoch"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "withdrawable_epoch"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
 
 		VoluntaryExit: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "epoch"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "validator_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
 
 		SignedVoluntaryExit: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "message"
-					type: VoluntaryExit
+					type: {
+						type: "ref"
+						ref:  "VoluntaryExit"
+					}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		HistoricalBatch: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "block_roots"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {
-							kind:   "vector"
-							length: 32
-							elem: {kind: "basic", type: "uint8"}
-						}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type:   "vector"
+									size: 32
+									children: [
+										{
+											name: "element"
+											type: {
+												type: "uint8"
+											}
+										},
+									]
+								}
+							},
+						]
 					}
 				},
 				{
 					name: "state_roots"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {
-							kind:   "vector"
-							length: 32
-							elem: {kind: "basic", type: "uint8"}
-						}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type:   "vector"
+									size: 32
+									children: [
+										{
+											name: "element"
+											type: {
+												type: "uint8"
+											}
+										},
+									]
+								}
+							},
+						]
 					}
 				},
 			]
 		}
 
 		Eth1Data: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "deposit_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "deposit_count"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "block_hash"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 			]
 		}
 
 		SigningRoot: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "object_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "domain"
-					type: {kind: "list", maxLength: 8, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "list", limit: 8, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 			]
 		}
 
 		BeaconBlockHeader: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "parent_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "state_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "body_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 			]
 		}
 
 		SignedBeaconBlockHeader: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "message"
-					type: BeaconBlockHeader
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockHeader"
+					}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		ProposerSlashing: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "signed_header_1"
-					type: SignedBeaconBlockHeader
+					type: {
+						type: "ref"
+						ref:  "SignedBeaconBlockHeader"
+					}
 				},
 				{
 					name: "signed_header_2"
-					type: SignedBeaconBlockHeader
+					type: {
+						type: "ref"
+						ref:  "SignedBeaconBlockHeader"
+					}
 				},
 			]
 		}
 
 		AttesterSlashing: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "attestation_1"
-					type: IndexedAttestation
+					type: {
+						type: "ref"
+						ref:  "IndexedAttestation"
+					}
 				},
 				{
 					name: "attestation_2"
-					type: IndexedAttestation
+					type: {
+						type: "ref"
+						ref:  "IndexedAttestation"
+					}
 				},
 			]
 		}
 
 		Transfer: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "sender"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "recipient"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "amount"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "fee"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "pubkey"
-					type: BLSPubkey
+					type: {
+						type: "ref"
+						ref:  "BLSPubkey"
+					}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		ForkData: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "current_version"
-					type: {kind: "vector", length: 4, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 4, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "genesis_validators_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 			]
 		}
 
 		SigningData: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "object_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "domain"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 			]
 		}
 
 		Eth1Block: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "timestamp"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "deposit_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "deposit_count"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
 
 		PowBlock: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "block_hash"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "parent_hash"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "total_difficulty"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 			]
 		}
@@ -564,189 +711,267 @@ BeaconChain: cuessz.#Schema & {
 		// ===== Phase 0 Types =====
 
 		BeaconBlockBodyPhase0: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "randao_reveal"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 				{
 					name: "eth1_data"
-					type: Eth1Data
+					type: {
+						type: "ref"
+						ref:  "Eth1Data"
+					}
 				},
 				{
 					name: "graffiti"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "proposer_slashings"
-					type: {kind: "list", maxLength: 16, elem: ProposerSlashing}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "ProposerSlashing"}},]}
 				},
 				{
 					name: "attester_slashings"
-					type: {kind: "list", maxLength: 2, elem: AttesterSlashing}
+					type: {type: "list", limit: 2, children: [{name: "element", type: {type: "ref", ref: "AttesterSlashing"}},]}
 				},
 				{
 					name: "attestations"
-					type: {kind: "list", maxLength: 128, elem: Attestation}
+					type: {type: "list", limit: 128, children: [{name: "element", type: {type: "ref", ref: "Attestation"}},]}
 				},
 				{
 					name: "deposits"
-					type: {kind: "list", maxLength: 16, elem: Deposit}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "Deposit"}},]}
 				},
 				{
 					name: "voluntary_exits"
-					type: {kind: "list", maxLength: 16, elem: SignedVoluntaryExit}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "SignedVoluntaryExit"}},]}
 				},
 			]
 		}
 
 		BeaconBlockPhase0: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "parent_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "state_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "body"
-					type: BeaconBlockBodyPhase0
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockBodyPhase0"
+					}
 				},
 			]
 		}
 
 		SignedBeaconBlockPhase0: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "message"
-					type: BeaconBlockPhase0
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockPhase0"
+					}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		BeaconStatePhase0: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "genesis_time"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "genesis_validators_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "fork"
-					type: Fork
+					type: {
+						type: "ref"
+						ref:  "Fork"
+					}
 				},
 				{
 					name: "latest_block_header"
-					type: BeaconBlockHeader
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockHeader"
+					}
 				},
 				{
 					name: "block_roots"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "state_roots"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "historical_roots"
 					type: {
-						kind:      "list"
-						maxLength: 16777216
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:      "list"
+						limit: 16777216
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "eth1_data"
-					type: Eth1Data
+					type: {
+						type: "ref"
+						ref:  "Eth1Data"
+					}
 				},
 				{
 					name: "eth1_data_votes"
-					type: {kind: "list", maxLength: 2048, elem: Eth1Data}
+					type: {type: "list", limit: 2048, children: [{name: "element", type: {type: "ref", ref: "Eth1Data"}},]}
 				},
 				{
 					name: "eth1_deposit_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "validators"
-					type: {kind: "list", maxLength: 1099511627776, elem: Validator}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "ref", ref: "Validator"}},]}
 				},
 				{
 					name: "balances"
-					type: {kind: "list", maxLength: 1099511627776, elem: {kind: "basic", type: "uint64"}}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
 				},
 				{
 					name: "randao_mixes"
 					type: {
-						kind:   "vector"
-						length: 65536
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 65536
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "slashings"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {kind: "basic", type: "uint64"}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "uint64"
+								}
+							},
+						]
 					}
 				},
 				{
 					name: "previous_epoch_attestations"
-					type: {kind: "list", maxLength: 4096, elem: PendingAttestation}
+					type: {type: "list", limit: 4096, children: [{name: "element", type: {type: "ref", ref: "PendingAttestation"}},]}
 				},
 				{
 					name: "current_epoch_attestations"
-					type: {kind: "list", maxLength: 4096, elem: PendingAttestation}
+					type: {type: "list", limit: 4096, children: [{name: "element", type: {type: "ref", ref: "PendingAttestation"}},]}
 				},
 				{
 					name: "justification_bits"
-					type: {kind: "vector", length: 1, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 1, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "previous_justified_checkpoint"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 				{
 					name: "current_justified_checkpoint"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 				{
 					name: "finalized_checkpoint"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 			]
 		}
@@ -754,453 +979,646 @@ BeaconChain: cuessz.#Schema & {
 		// ===== Altair Types =====
 
 		SyncCommittee: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "pubkeys"
 					type: {
-						kind:   "vector"
-						length: 512
-						elem:   BLSPubkey
+						type:   "vector"
+						size: 512
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "BLSPubkey"
+								}
+							},
+						]
 					}
 				},
 				{
 					name: "aggregate_pubkey"
-					type: BLSPubkey
+					type: {
+						type: "ref"
+						ref:  "BLSPubkey"
+					}
 				},
 			]
 		}
 
 		SyncAggregate: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "sync_committee_bits"
-					type: {kind: "vector", length: 64, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 64, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "sync_committee_signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		LightClientHeader: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "beacon"
-					type: BeaconBlockHeader
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockHeader"
+					}
 				},
 			]
 		}
 
 		LightClientBootstrap: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "header"
-					type: LightClientHeader
+					type: {
+						type: "ref"
+						ref:  "LightClientHeader"
+					}
 				},
 				{
 					name: "current_sync_committee"
-					type: SyncCommittee
+					type: {
+						type: "ref"
+						ref:  "SyncCommittee"
+					}
 				},
 				{
 					name: "current_sync_committee_branch"
 					type: {
-						kind:   "vector"
-						length: 5
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 5
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 			]
 		}
 
 		LightClientFinalityUpdate: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "attested_header"
-					type: LightClientHeader
+					type: {
+						type: "ref"
+						ref:  "LightClientHeader"
+					}
 				},
 				{
 					name: "finalized_header"
-					type: LightClientHeader
+					type: {
+						type: "ref"
+						ref:  "LightClientHeader"
+					}
 				},
 				{
 					name: "finality_branch"
 					type: {
-						kind:   "vector"
-						length: 6
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 6
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "sync_aggregate"
-					type: SyncAggregate
+					type: {
+						type: "ref"
+						ref:  "SyncAggregate"
+					}
 				},
 				{
 					name: "signature_slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
 
 		LightClientOptimisticUpdate: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "attested_header"
-					type: LightClientHeader
+					type: {
+						type: "ref"
+						ref:  "LightClientHeader"
+					}
 				},
 				{
 					name: "sync_aggregate"
-					type: SyncAggregate
+					type: {
+						type: "ref"
+						ref:  "SyncAggregate"
+					}
 				},
 				{
 					name: "signature_slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
 
 		LightClientUpdate: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "attested_header"
-					type: LightClientHeader
+					type: {
+						type: "ref"
+						ref:  "LightClientHeader"
+					}
 				},
 				{
 					name: "next_sync_committee"
-					type: SyncCommittee
+					type: {
+						type: "ref"
+						ref:  "SyncCommittee"
+					}
 				},
 				{
 					name: "next_sync_committee_branch"
 					type: {
-						kind:   "vector"
-						length: 5
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 5
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "finalized_header"
-					type: LightClientHeader
+					type: {
+						type: "ref"
+						ref:  "LightClientHeader"
+					}
 				},
 				{
 					name: "finality_branch"
 					type: {
-						kind:   "vector"
-						length: 6
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 6
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "sync_aggregate"
-					type: SyncAggregate
+					type: {
+						type: "ref"
+						ref:  "SyncAggregate"
+					}
 				},
 				{
 					name: "signature_slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
 
 		BeaconBlockBodyAltair: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "randao_reveal"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 				{
 					name: "eth1_data"
-					type: Eth1Data
+					type: {
+						type: "ref"
+						ref:  "Eth1Data"
+					}
 				},
 				{
 					name: "graffiti"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "proposer_slashings"
-					type: {kind: "list", maxLength: 16, elem: ProposerSlashing}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "ProposerSlashing"}},]}
 				},
 				{
 					name: "attester_slashings"
-					type: {kind: "list", maxLength: 2, elem: AttesterSlashing}
+					type: {type: "list", limit: 2, children: [{name: "element", type: {type: "ref", ref: "AttesterSlashing"}},]}
 				},
 				{
 					name: "attestations"
-					type: {kind: "list", maxLength: 128, elem: Attestation}
+					type: {type: "list", limit: 128, children: [{name: "element", type: {type: "ref", ref: "Attestation"}},]}
 				},
 				{
 					name: "deposits"
-					type: {kind: "list", maxLength: 16, elem: Deposit}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "Deposit"}},]}
 				},
 				{
 					name: "voluntary_exits"
-					type: {kind: "list", maxLength: 16, elem: SignedVoluntaryExit}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "SignedVoluntaryExit"}},]}
 				},
 				{
 					name: "sync_aggregate"
-					type: SyncAggregate
+					type: {
+						type: "ref"
+						ref:  "SyncAggregate"
+					}
 				},
 			]
 		}
 
 		BeaconBlockAltair: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "parent_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "state_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "body"
-					type: BeaconBlockBodyAltair
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockBodyAltair"
+					}
 				},
 			]
 		}
 
 		SignedBeaconBlockAltair: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "message"
-					type: BeaconBlockAltair
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockAltair"
+					}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		BeaconStateAltair: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "genesis_time"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "genesis_validators_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "fork"
-					type: Fork
+					type: {
+						type: "ref"
+						ref:  "Fork"
+					}
 				},
 				{
 					name: "latest_block_header"
-					type: BeaconBlockHeader
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockHeader"
+					}
 				},
 				{
 					name: "block_roots"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "state_roots"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "historical_roots"
 					type: {
-						kind:      "list"
-						maxLength: 16777216
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:      "list"
+						limit: 16777216
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "eth1_data"
-					type: Eth1Data
+					type: {
+						type: "ref"
+						ref:  "Eth1Data"
+					}
 				},
 				{
 					name: "eth1_data_votes"
-					type: {kind: "list", maxLength: 2048, elem: Eth1Data}
+					type: {type: "list", limit: 2048, children: [{name: "element", type: {type: "ref", ref: "Eth1Data"}},]}
 				},
 				{
 					name: "eth1_deposit_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "validators"
-					type: {kind: "list", maxLength: 1099511627776, elem: Validator}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "ref", ref: "Validator"}},]}
 				},
 				{
 					name: "balances"
-					type: {kind: "list", maxLength: 1099511627776, elem: {kind: "basic", type: "uint64"}}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
 				},
 				{
 					name: "randao_mixes"
 					type: {
-						kind:   "vector"
-						length: 65536
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 65536
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "slashings"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {kind: "basic", type: "uint64"}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "uint64"
+								}
+							},
+						]
 					}
 				},
 				{
 					name: "previous_epoch_participation"
-					type: {kind: "list", maxLength: 1099511627776, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "current_epoch_participation"
-					type: {kind: "list", maxLength: 1099511627776, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "justification_bits"
-					type: {kind: "vector", length: 1, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 1, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "previous_justified_checkpoint"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 				{
 					name: "current_justified_checkpoint"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 				{
 					name: "finalized_checkpoint"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 				{
 					name: "inactivity_scores"
-					type: {kind: "list", maxLength: 1099511627776, elem: {kind: "basic", type: "uint64"}}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
 				},
 				{
 					name: "current_sync_committee"
-					type: SyncCommittee
+					type: {
+						type: "ref"
+						ref:  "SyncCommittee"
+					}
 				},
 				{
 					name: "next_sync_committee"
-					type: SyncCommittee
+					type: {
+						type: "ref"
+						ref:  "SyncCommittee"
+					}
 				},
 			]
 		}
 
 		SyncCommitteeContribution: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "beacon_block_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "subcommittee_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "aggregation_bits"
-					type: {kind: "vector", length: 16, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 16, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		ContributionAndProof: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "aggregator_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "contribution"
-					type: SyncCommitteeContribution
+					type: {
+						type: "ref"
+						ref:  "SyncCommitteeContribution"
+					}
 				},
 				{
 					name: "selection_proof"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		SignedContributionAndProof: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "message"
-					type: ContributionAndProof
+					type: {
+						type: "ref"
+						ref:  "ContributionAndProof"
+					}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		SyncCommitteeMessage: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "beacon_block_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "validator_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		SyncAggregatorSelectionData: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "subcommittee_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
@@ -1208,435 +1626,577 @@ BeaconChain: cuessz.#Schema & {
 		// ===== Bellatrix Types =====
 
 		ExecutionPayloadHeader: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "parent_hash"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "fee_recipient"
-					type: {kind: "vector", length: 20, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 20, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "state_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "receipts_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "logs_bloom"
-					type: {kind: "vector", length: 256, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 256, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "prev_randao"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "block_number"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "gas_limit"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "gas_used"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "timestamp"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "extra_data"
-					type: {kind: "list", maxLength: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "list", limit: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "base_fee_per_gas"
-					type: Uint256
+					type: {
+						type: "ref"
+						ref:  "Uint256"
+					}
 				},
 				{
 					name: "block_hash"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "transactions_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 			]
 		}
 
 		ExecutionPayload: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "parent_hash"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "fee_recipient"
-					type: {kind: "vector", length: 20, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 20, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "state_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "receipts_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "logs_bloom"
-					type: {kind: "vector", length: 256, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 256, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "prev_randao"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "block_number"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "gas_limit"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "gas_used"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "timestamp"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "extra_data"
-					type: {kind: "list", maxLength: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "list", limit: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "base_fee_per_gas"
-					type: Uint256
+					type: {
+						type: "ref"
+						ref:  "Uint256"
+					}
 				},
 				{
 					name: "block_hash"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "transactions"
 					type: {
-						kind:      "list"
-						maxLength: 1048576
-						elem: {
-							kind:      "list"
-							maxLength: 1073741824
-							elem: {kind: "basic", type: "uint8"}
-						}
+						type:      "list"
+						limit: 1048576
+						children: [
+							{
+								name: "element"
+								type: {
+									type:      "list"
+									limit: 1073741824
+									children: [
+										{
+											name: "element"
+											type: {
+												type: "uint8"
+											}
+										},
+									]
+								}
+							},
+						]
 					}
 				},
 			]
 		}
 
 		BeaconBlockBodyBellatrix: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "randao_reveal"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 				{
 					name: "eth1_data"
-					type: Eth1Data
+					type: {
+						type: "ref"
+						ref:  "Eth1Data"
+					}
 				},
 				{
 					name: "graffiti"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "proposer_slashings"
-					type: {kind: "list", maxLength: 16, elem: ProposerSlashing}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "ProposerSlashing"}},]}
 				},
 				{
 					name: "attester_slashings"
-					type: {kind: "list", maxLength: 2, elem: AttesterSlashing}
+					type: {type: "list", limit: 2, children: [{name: "element", type: {type: "ref", ref: "AttesterSlashing"}},]}
 				},
 				{
 					name: "attestations"
-					type: {kind: "list", maxLength: 128, elem: Attestation}
+					type: {type: "list", limit: 128, children: [{name: "element", type: {type: "ref", ref: "Attestation"}},]}
 				},
 				{
 					name: "deposits"
-					type: {kind: "list", maxLength: 16, elem: Deposit}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "Deposit"}},]}
 				},
 				{
 					name: "voluntary_exits"
-					type: {kind: "list", maxLength: 16, elem: SignedVoluntaryExit}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "SignedVoluntaryExit"}},]}
 				},
 				{
 					name: "sync_aggregate"
-					type: SyncAggregate
+					type: {
+						type: "ref"
+						ref:  "SyncAggregate"
+					}
 				},
 				{
 					name: "execution_payload"
-					type: ExecutionPayload
+					type: {
+						type: "ref"
+						ref:  "ExecutionPayload"
+					}
 				},
 			]
 		}
 
 		BeaconBlockBellatrix: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "parent_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "state_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "body"
-					type: BeaconBlockBodyBellatrix
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockBodyBellatrix"
+					}
 				},
 			]
 		}
 
 		SignedBeaconBlockBellatrix: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "message"
-					type: BeaconBlockBellatrix
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockBellatrix"
+					}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		BlindedBeaconBlockBody: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "randao_reveal"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 				{
 					name: "eth1_data"
-					type: Eth1Data
+					type: {
+						type: "ref"
+						ref:  "Eth1Data"
+					}
 				},
 				{
 					name: "graffiti"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "proposer_slashings"
-					type: {kind: "list", maxLength: 16, elem: ProposerSlashing}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "ProposerSlashing"}},]}
 				},
 				{
 					name: "attester_slashings"
-					type: {kind: "list", maxLength: 2, elem: AttesterSlashing}
+					type: {type: "list", limit: 2, children: [{name: "element", type: {type: "ref", ref: "AttesterSlashing"}},]}
 				},
 				{
 					name: "attestations"
-					type: {kind: "list", maxLength: 128, elem: Attestation}
+					type: {type: "list", limit: 128, children: [{name: "element", type: {type: "ref", ref: "Attestation"}},]}
 				},
 				{
 					name: "deposits"
-					type: {kind: "list", maxLength: 16, elem: Deposit}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "Deposit"}},]}
 				},
 				{
 					name: "voluntary_exits"
-					type: {kind: "list", maxLength: 16, elem: SignedVoluntaryExit}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "SignedVoluntaryExit"}},]}
 				},
 				{
 					name: "sync_aggregate"
-					type: SyncAggregate
+					type: {
+						type: "ref"
+						ref:  "SyncAggregate"
+					}
 				},
 				{
 					name: "execution_payload_header"
-					type: ExecutionPayloadHeader
+					type: {
+						type: "ref"
+						ref:  "ExecutionPayloadHeader"
+					}
 				},
 			]
 		}
 
 		BlindedBeaconBlock: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "parent_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "state_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "body"
-					type: BlindedBeaconBlockBody
+					type: {
+						type: "ref"
+						ref:  "BlindedBeaconBlockBody"
+					}
 				},
 			]
 		}
 
 		SignedBlindedBeaconBlock: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "message"
-					type: BlindedBeaconBlock
+					type: {
+						type: "ref"
+						ref:  "BlindedBeaconBlock"
+					}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		BeaconStateBellatrix: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "genesis_time"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "genesis_validators_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "fork"
-					type: Fork
+					type: {
+						type: "ref"
+						ref:  "Fork"
+					}
 				},
 				{
 					name: "latest_block_header"
-					type: BeaconBlockHeader
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockHeader"
+					}
 				},
 				{
 					name: "block_roots"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "state_roots"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "historical_roots"
 					type: {
-						kind:      "list"
-						maxLength: 16777216
-						elem: {
-							kind:      "list"
-							maxLength: 32
-							elem: {kind: "basic", type: "uint8"}
-						}
+						type:      "list"
+						limit: 16777216
+						children: [
+							{
+								name: "element"
+								type: {
+									type:      "list"
+									limit: 32
+									children: [
+										{
+											name: "element"
+											type: {
+												type: "uint8"
+											}
+										},
+									]
+								}
+							},
+						]
 					}
 				},
 				{
 					name: "eth1_data"
-					type: Eth1Data
+					type: {
+						type: "ref"
+						ref:  "Eth1Data"
+					}
 				},
 				{
 					name: "eth1_data_votes"
-					type: {kind: "list", maxLength: 2048, elem: Eth1Data}
+					type: {type: "list", limit: 2048, children: [{name: "element", type: {type: "ref", ref: "Eth1Data"}},]}
 				},
 				{
 					name: "eth1_deposit_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "validators"
-					type: {kind: "list", maxLength: 1099511627776, elem: Validator}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "ref", ref: "Validator"}},]}
 				},
 				{
 					name: "balances"
-					type: {kind: "list", maxLength: 1099511627776, elem: {kind: "basic", type: "uint64"}}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
 				},
 				{
 					name: "randao_mixes"
 					type: {
-						kind:   "vector"
-						length: 65536
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 65536
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "slashings"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {kind: "basic", type: "uint64"}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "uint64"
+								}
+							},
+						]
 					}
 				},
 				{
 					name: "previous_epoch_participation"
-					type: {kind: "list", maxLength: 1099511627776, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "current_epoch_participation"
-					type: {kind: "list", maxLength: 1099511627776, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "justification_bits"
-					type: {kind: "vector", length: 1, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 1, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "previous_justified_checkpoint"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 				{
 					name: "current_justified_checkpoint"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 				{
 					name: "finalized_checkpoint"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 				{
 					name: "inactivity_scores"
-					type: {kind: "list", maxLength: 1099511627776, elem: {kind: "basic", type: "uint64"}}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
 				},
 				{
 					name: "current_sync_committee"
-					type: SyncCommittee
+					type: {
+						type: "ref"
+						ref:  "SyncCommittee"
+					}
 				},
 				{
 					name: "next_sync_committee"
-					type: SyncCommittee
+					type: {
+						type: "ref"
+						ref:  "SyncCommittee"
+					}
 				},
 				{
 					name: "latest_execution_payload_header"
-					type: ExecutionPayloadHeader
+					type: {
+						type: "ref"
+						ref:  "ExecutionPayloadHeader"
+					}
 				},
 			]
 		}
@@ -1644,575 +2204,784 @@ BeaconChain: cuessz.#Schema & {
 		// ===== Capella Types =====
 
 		Withdrawal: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "validator_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "address"
-					type: {kind: "vector", length: 20, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 20, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "amount"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
 
 		BLSToExecutionChange: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "validator_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "from_bls_pubkey"
-					type: BLSPubkey
+					type: {
+						type: "ref"
+						ref:  "BLSPubkey"
+					}
 				},
 				{
 					name: "to_execution_address"
-					type: {kind: "vector", length: 20, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 20, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 			]
 		}
 
 		SignedBLSToExecutionChange: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "message"
-					type: BLSToExecutionChange
+					type: {
+						type: "ref"
+						ref:  "BLSToExecutionChange"
+					}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		HistoricalSummary: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "block_summary_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "state_summary_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 			]
 		}
 
 		ExecutionPayloadHeaderCapella: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "parent_hash"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "fee_recipient"
-					type: {kind: "vector", length: 20, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 20, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "state_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "receipts_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "logs_bloom"
-					type: {kind: "vector", length: 256, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 256, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "prev_randao"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "block_number"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "gas_limit"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "gas_used"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "timestamp"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "extra_data"
-					type: {kind: "list", maxLength: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "list", limit: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "base_fee_per_gas"
-					type: Uint256
+					type: {
+						type: "ref"
+						ref:  "Uint256"
+					}
 				},
 				{
 					name: "block_hash"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "transactions_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "withdrawals_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 			]
 		}
 
 		ExecutionPayloadCapella: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "parent_hash"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "fee_recipient"
-					type: {kind: "vector", length: 20, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 20, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "state_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "receipts_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "logs_bloom"
-					type: {kind: "vector", length: 256, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 256, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "prev_randao"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "block_number"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "gas_limit"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "gas_used"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "timestamp"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "extra_data"
-					type: {kind: "list", maxLength: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "list", limit: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "base_fee_per_gas"
-					type: Uint256
+					type: {
+						type: "ref"
+						ref:  "Uint256"
+					}
 				},
 				{
 					name: "block_hash"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "transactions"
 					type: {
-						kind:      "list"
-						maxLength: 1048576
-						elem: {
-							kind:      "list"
-							maxLength: 1073741824
-							elem: {kind: "basic", type: "uint8"}
-						}
+						type:      "list"
+						limit: 1048576
+						children: [
+							{
+								name: "element"
+								type: {
+									type:      "list"
+									limit: 1073741824
+									children: [
+										{
+											name: "element"
+											type: {
+												type: "uint8"
+											}
+										},
+									]
+								}
+							},
+						]
 					}
 				},
 				{
 					name: "withdrawals"
-					type: {kind: "list", maxLength: 16, elem: Withdrawal}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "Withdrawal"}},]}
 				},
 			]
 		}
 
 		BeaconBlockBodyCapella: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "randao_reveal"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 				{
 					name: "eth1_data"
-					type: Eth1Data
+					type: {
+						type: "ref"
+						ref:  "Eth1Data"
+					}
 				},
 				{
 					name: "graffiti"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "proposer_slashings"
-					type: {kind: "list", maxLength: 16, elem: ProposerSlashing}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "ProposerSlashing"}},]}
 				},
 				{
 					name: "attester_slashings"
-					type: {kind: "list", maxLength: 2, elem: AttesterSlashing}
+					type: {type: "list", limit: 2, children: [{name: "element", type: {type: "ref", ref: "AttesterSlashing"}},]}
 				},
 				{
 					name: "attestations"
-					type: {kind: "list", maxLength: 128, elem: Attestation}
+					type: {type: "list", limit: 128, children: [{name: "element", type: {type: "ref", ref: "Attestation"}},]}
 				},
 				{
 					name: "deposits"
-					type: {kind: "list", maxLength: 16, elem: Deposit}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "Deposit"}},]}
 				},
 				{
 					name: "voluntary_exits"
-					type: {kind: "list", maxLength: 16, elem: SignedVoluntaryExit}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "SignedVoluntaryExit"}},]}
 				},
 				{
 					name: "sync_aggregate"
-					type: SyncAggregate
+					type: {
+						type: "ref"
+						ref:  "SyncAggregate"
+					}
 				},
 				{
 					name: "execution_payload"
-					type: ExecutionPayloadCapella
+					type: {
+						type: "ref"
+						ref:  "ExecutionPayloadCapella"
+					}
 				},
 				{
 					name: "bls_to_execution_changes"
-					type: {kind: "list", maxLength: 16, elem: SignedBLSToExecutionChange}
+					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "SignedBLSToExecutionChange"}},]}
 				},
 			]
 		}
 
 		BeaconBlockCapella: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "parent_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "state_root"
-					type: Root
+					type: {
+						type: "ref"
+						ref:  "Root"
+					}
 				},
 				{
 					name: "body"
-					type: BeaconBlockBodyCapella
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockBodyCapella"
+					}
 				},
 			]
 		}
 
 		SignedBeaconBlockCapella: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "message"
-					type: BeaconBlockCapella
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockCapella"
+					}
 				},
 				{
 					name: "signature"
-					type: Signature
+					type: {
+						type: "ref"
+						ref:  "Signature"
+					}
 				},
 			]
 		}
 
 		BeaconStateCapella: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "genesis_time"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "genesis_validators_root"
-					type: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "fork"
-					type: Fork
+					type: {
+						type: "ref"
+						ref:  "Fork"
+					}
 				},
 				{
 					name: "latest_block_header"
-					type: BeaconBlockHeader
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockHeader"
+					}
 				},
 				{
 					name: "block_roots"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "state_roots"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "historical_roots"
 					type: {
-						kind:      "list"
-						maxLength: 16777216
-						elem: {
-							kind:      "list"
-							maxLength: 32
-							elem: {kind: "basic", type: "uint8"}
-						}
+						type:      "list"
+						limit: 16777216
+						children: [
+							{
+								name: "element"
+								type: {
+									type:      "list"
+									limit: 32
+									children: [
+										{
+											name: "element"
+											type: {
+												type: "uint8"
+											}
+										},
+									]
+								}
+							},
+						]
 					}
 				},
 				{
 					name: "eth1_data"
-					type: Eth1Data
+					type: {
+						type: "ref"
+						ref:  "Eth1Data"
+					}
 				},
 				{
 					name: "eth1_data_votes"
-					type: {kind: "list", maxLength: 2048, elem: Eth1Data}
+					type: {type: "list", limit: 2048, children: [{name: "element", type: {type: "ref", ref: "Eth1Data"}},]}
 				},
 				{
 					name: "eth1_deposit_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "validators"
-					type: {kind: "list", maxLength: 1099511627776, elem: Validator}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "ref", ref: "Validator"}},]}
 				},
 				{
 					name: "balances"
-					type: {kind: "list", maxLength: 1099511627776, elem: {kind: "basic", type: "uint64"}}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
 				},
 				{
 					name: "randao_mixes"
 					type: {
-						kind:   "vector"
-						length: 65536
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 65536
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "slashings"
 					type: {
-						kind:   "vector"
-						length: 8192
-						elem: {kind: "basic", type: "uint64"}
+						type:   "vector"
+						size: 8192
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "uint64"
+								}
+							},
+						]
 					}
 				},
 				{
 					name: "previous_epoch_participation"
-					type: {kind: "list", maxLength: 1099511627776, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "current_epoch_participation"
-					type: {kind: "list", maxLength: 1099511627776, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "justification_bits"
-					type: {kind: "vector", length: 1, elem: {kind: "basic", type: "uint8"}}
+					type: {type: "vector", size: 1, children: [{name: "element", type: {type: "uint8"}},]}
 				},
 				{
 					name: "previous_justified_checkpoint"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 				{
 					name: "current_justified_checkpoint"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 				{
 					name: "finalized_checkpoint"
-					type: Checkpoint
+					type: {
+						type: "ref"
+						ref:  "Checkpoint"
+					}
 				},
 				{
 					name: "inactivity_scores"
-					type: {kind: "list", maxLength: 1099511627776, elem: {kind: "basic", type: "uint64"}}
+					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
 				},
 				{
 					name: "current_sync_committee"
-					type: SyncCommittee
+					type: {
+						type: "ref"
+						ref:  "SyncCommittee"
+					}
 				},
 				{
 					name: "next_sync_committee"
-					type: SyncCommittee
+					type: {
+						type: "ref"
+						ref:  "SyncCommittee"
+					}
 				},
 				{
 					name: "latest_execution_payload_header"
-					type: ExecutionPayloadHeaderCapella
+					type: {
+						type: "ref"
+						ref:  "ExecutionPayloadHeaderCapella"
+					}
 				},
 				{
 					name: "next_withdrawal_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "next_withdrawal_validator_index"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 				{
 					name: "historical_summaries"
-					type: {kind: "list", maxLength: 16777216, elem: HistoricalSummary}
+					type: {type: "list", limit: 16777216, children: [{name: "element", type: {type: "ref", ref: "HistoricalSummary"}},]}
 				},
 			]
 		}
 
 		LightClientHeaderCapella: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "beacon"
-					type: BeaconBlockHeader
+					type: {
+						type: "ref"
+						ref:  "BeaconBlockHeader"
+					}
 				},
 				{
 					name: "execution"
-					type: ExecutionPayloadHeaderCapella
+					type: {
+						type: "ref"
+						ref:  "ExecutionPayloadHeaderCapella"
+					}
 				},
 				{
 					name: "execution_branch"
 					type: {
-						kind:   "vector"
-						length: 4
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 4
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 			]
 		}
 
 		LightClientBootstrapCapella: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "header"
-					type: LightClientHeaderCapella
+					type: {
+						type: "ref"
+						ref:  "LightClientHeaderCapella"
+					}
 				},
 				{
 					name: "current_sync_committee"
-					type: SyncCommittee
+					type: {
+						type: "ref"
+						ref:  "SyncCommittee"
+					}
 				},
 				{
 					name: "current_sync_committee_branch"
 					type: {
-						kind:   "vector"
-						length: 5
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 5
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 			]
 		}
 
 		LightClientFinalityUpdateCapella: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "attested_header"
-					type: LightClientHeaderCapella
+					type: {
+						type: "ref"
+						ref:  "LightClientHeaderCapella"
+					}
 				},
 				{
 					name: "finalized_header"
-					type: LightClientHeaderCapella
+					type: {
+						type: "ref"
+						ref:  "LightClientHeaderCapella"
+					}
 				},
 				{
 					name: "finality_branch"
 					type: {
-						kind:   "vector"
-						length: 6
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 6
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "sync_aggregate"
-					type: SyncAggregate
+					type: {
+						type: "ref"
+						ref:  "SyncAggregate"
+					}
 				},
 				{
 					name: "signature_slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
 
 		LightClientOptimisticUpdateCapella: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "attested_header"
-					type: LightClientHeaderCapella
+					type: {
+						type: "ref"
+						ref:  "LightClientHeaderCapella"
+					}
 				},
 				{
 					name: "sync_aggregate"
-					type: SyncAggregate
+					type: {
+						type: "ref"
+						ref:  "SyncAggregate"
+					}
 				},
 				{
 					name: "signature_slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
 
 		LightClientUpdateCapella: {
-			kind: "container"
-			fields: [
+			type: "container"
+			children: [
 				{
 					name: "attested_header"
-					type: LightClientHeaderCapella
+					type: {
+						type: "ref"
+						ref:  "LightClientHeaderCapella"
+					}
 				},
 				{
 					name: "next_sync_committee"
-					type: SyncCommittee
+					type: {
+						type: "ref"
+						ref:  "SyncCommittee"
+					}
 				},
 				{
 					name: "next_sync_committee_branch"
 					type: {
-						kind:   "vector"
-						length: 5
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 5
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "finalized_header"
-					type: LightClientHeaderCapella
+					type: {
+						type: "ref"
+						ref:  "LightClientHeaderCapella"
+					}
 				},
 				{
 					name: "finality_branch"
 					type: {
-						kind:   "vector"
-						length: 6
-						elem: {kind: "vector", length: 32, elem: {kind: "basic", type: "uint8"}}
-					}
+						type:   "vector"
+						size: 6
+						children: [
+							{
+								name: "element"
+								type: {
+									type: "ref"
+									ref:  "Root"
+								}
+							},
+						]
+				}
 				},
 				{
 					name: "sync_aggregate"
-					type: SyncAggregate
+					type: {
+						type: "ref"
+						ref:  "SyncAggregate"
+					}
 				},
 				{
 					name: "signature_slot"
-					type: {kind: "basic", type: "uint64"}
+					type: {type: "uint64"}
 				},
 			]
 		}
