@@ -9,7 +9,7 @@ BeaconChain: cuessz.#Schema & {
 		authors: ["gfx labs"]
 	}
 
-	types: {
+	defs: {
 		// ===== Basic Types =====
 
 		Root: {
@@ -18,7 +18,7 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "element"
-					type: {
+					def: {
 						type: "uint8"
 					}
 				},
@@ -31,7 +31,7 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "element"
-					type: {
+					def: {
 						type: "uint8"
 					}
 				},
@@ -44,20 +44,7 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "element"
-					type: {
-						type: "uint8"
-					}
-				},
-			]
-		}
-
-		Uint256: {
-			type:   "vector"
-			size: 32
-			children: [
-				{
-					name: "element"
-					type: {
+					def: {
 						type: "uint8"
 					}
 				},
@@ -71,11 +58,11 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "epoch"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
@@ -88,26 +75,26 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "beacon_block_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "source"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
 				},
 				{
 					name: "target"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
@@ -120,18 +107,18 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "aggregation_bits"
-					type: {type: "bitlist", limit: 2048}
+					def: {type: "bitlist", limit: 2048}
 				},
 				{
 					name: "data"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "AttestationData"
 					}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -144,18 +131,18 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "aggregator_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "aggregate"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Attestation"
 					}
 				},
 				{
 					name: "selection_proof"
-					type: {type: "vector", size: 96, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 96, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 			]
 		}
@@ -165,14 +152,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "message"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "AggregateAndProof"
 					}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -185,22 +172,22 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "pubkey"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BLSPubkey"
 					}
 				},
 				{
 					name: "withdrawal_credentials"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "amount"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -213,19 +200,19 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "proof"
-					type: {
+					def: {
 						type:   "vector"
 						size: 33
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type:   "vector"
 									size: 32
 									children: [
 										{
 											name: "element"
-											type: {
+											def: {
 												type: "uint8"
 											}
 										},
@@ -237,7 +224,7 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "data"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "DepositData"
 					}
@@ -250,18 +237,18 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "pubkey"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BLSPubkey"
 					}
 				},
 				{
 					name: "withdrawal_credentials"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "amount"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}
@@ -271,18 +258,18 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "attesting_indices"
-					type: {type: "list", limit: 2048, children: [{name: "element", type: {type: "uint64"}},]}
+					def: {type: "list", limit: 2048, children: [{name: "element", def: {type: "uint64"}},]}
 				},
 				{
 					name: "data"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "AttestationData"
 					}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -295,22 +282,22 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "aggregation_bits"
-					type: {type: "bitlist", limit: 2048}
+					def: {type: "bitlist", limit: 2048}
 				},
 				{
 					name: "data"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "AttestationData"
 					}
 				},
 				{
 					name: "inclusion_delay"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}
@@ -320,15 +307,15 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "previous_version"
-					type: {type: "vector", size: 4, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 4, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "current_version"
-					type: {type: "vector", size: 4, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 4, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "epoch"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}
@@ -338,38 +325,38 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "pubkey"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BLSPubkey"
 					}
 				},
 				{
 					name: "withdrawal_credentials"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "effective_balance"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "slashed"
-					type: {type: "boolean"}
+					def: {type: "boolean"}
 				},
 				{
 					name: "activation_eligibility_epoch"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "activation_epoch"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "exit_epoch"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "withdrawable_epoch"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}
@@ -379,11 +366,11 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "epoch"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "validator_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}
@@ -393,14 +380,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "message"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "VoluntaryExit"
 					}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -413,19 +400,19 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "block_roots"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type:   "vector"
 									size: 32
 									children: [
 										{
 											name: "element"
-											type: {
+											def: {
 												type: "uint8"
 											}
 										},
@@ -437,19 +424,19 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "state_roots"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type:   "vector"
 									size: 32
 									children: [
 										{
 											name: "element"
-											type: {
+											def: {
 												type: "uint8"
 											}
 										},
@@ -467,18 +454,18 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "deposit_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "deposit_count"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "block_hash"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 			]
 		}
@@ -488,14 +475,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "object_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "domain"
-					type: {type: "list", limit: 8, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "list", limit: 8, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 			]
 		}
@@ -505,29 +492,29 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "parent_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "state_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "body_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
@@ -540,14 +527,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "message"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockHeader"
 					}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -560,14 +547,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "signed_header_1"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SignedBeaconBlockHeader"
 					}
 				},
 				{
 					name: "signed_header_2"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SignedBeaconBlockHeader"
 					}
@@ -580,14 +567,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "attestation_1"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "IndexedAttestation"
 					}
 				},
 				{
 					name: "attestation_2"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "IndexedAttestation"
 					}
@@ -600,34 +587,34 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "sender"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "recipient"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "amount"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "fee"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "pubkey"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BLSPubkey"
 					}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -640,11 +627,11 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "current_version"
-					type: {type: "vector", size: 4, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 4, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "genesis_validators_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
@@ -657,14 +644,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "object_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "domain"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 			]
 		}
@@ -674,18 +661,18 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "timestamp"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "deposit_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "deposit_count"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}
@@ -695,15 +682,15 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "block_hash"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "parent_hash"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "total_difficulty"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 			]
 		}
@@ -715,41 +702,41 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "randao_reveal"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
 				},
 				{
 					name: "eth1_data"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Eth1Data"
 					}
 				},
 				{
 					name: "graffiti"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "proposer_slashings"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "ProposerSlashing"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "ProposerSlashing"}},]}
 				},
 				{
 					name: "attester_slashings"
-					type: {type: "list", limit: 2, children: [{name: "element", type: {type: "ref", ref: "AttesterSlashing"}},]}
+					def: {type: "list", limit: 2, children: [{name: "element", def: {type: "ref", ref: "AttesterSlashing"}},]}
 				},
 				{
 					name: "attestations"
-					type: {type: "list", limit: 128, children: [{name: "element", type: {type: "ref", ref: "Attestation"}},]}
+					def: {type: "list", limit: 128, children: [{name: "element", def: {type: "ref", ref: "Attestation"}},]}
 				},
 				{
 					name: "deposits"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "Deposit"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "Deposit"}},]}
 				},
 				{
 					name: "voluntary_exits"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "SignedVoluntaryExit"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "SignedVoluntaryExit"}},]}
 				},
 			]
 		}
@@ -759,29 +746,29 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "parent_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "state_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "body"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockBodyPhase0"
 					}
@@ -794,14 +781,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "message"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockPhase0"
 					}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -814,39 +801,39 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "genesis_time"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "genesis_validators_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "fork"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Fork"
 					}
 				},
 				{
 					name: "latest_block_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockHeader"
 					}
 				},
 				{
 					name: "block_roots"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -856,13 +843,13 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "state_roots"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -872,13 +859,13 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "historical_roots"
-					type: {
+					def: {
 						type:      "list"
 						limit: 16777216
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -888,36 +875,36 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "eth1_data"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Eth1Data"
 					}
 				},
 				{
 					name: "eth1_data_votes"
-					type: {type: "list", limit: 2048, children: [{name: "element", type: {type: "ref", ref: "Eth1Data"}},]}
+					def: {type: "list", limit: 2048, children: [{name: "element", def: {type: "ref", ref: "Eth1Data"}},]}
 				},
 				{
 					name: "eth1_deposit_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "validators"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "ref", ref: "Validator"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "ref", ref: "Validator"}},]}
 				},
 				{
 					name: "balances"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "uint64"}},]}
 				},
 				{
 					name: "randao_mixes"
-					type: {
+					def: {
 						type:   "vector"
 						size: 65536
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -927,13 +914,13 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "slashings"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "uint64"
 								}
 							},
@@ -942,33 +929,33 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "previous_epoch_attestations"
-					type: {type: "list", limit: 4096, children: [{name: "element", type: {type: "ref", ref: "PendingAttestation"}},]}
+					def: {type: "list", limit: 4096, children: [{name: "element", def: {type: "ref", ref: "PendingAttestation"}},]}
 				},
 				{
 					name: "current_epoch_attestations"
-					type: {type: "list", limit: 4096, children: [{name: "element", type: {type: "ref", ref: "PendingAttestation"}},]}
+					def: {type: "list", limit: 4096, children: [{name: "element", def: {type: "ref", ref: "PendingAttestation"}},]}
 				},
 				{
 					name: "justification_bits"
-					type: {type: "vector", size: 1, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 1, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "previous_justified_checkpoint"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
 				},
 				{
 					name: "current_justified_checkpoint"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
 				},
 				{
 					name: "finalized_checkpoint"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
@@ -983,13 +970,13 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "pubkeys"
-					type: {
+					def: {
 						type:   "vector"
 						size: 512
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "BLSPubkey"
 								}
@@ -999,7 +986,7 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "aggregate_pubkey"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BLSPubkey"
 					}
@@ -1012,11 +999,11 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "sync_committee_bits"
-					type: {type: "vector", size: 64, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 64, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "sync_committee_signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -1029,7 +1016,7 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "beacon"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockHeader"
 					}
@@ -1042,27 +1029,27 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "LightClientHeader"
 					}
 				},
 				{
 					name: "current_sync_committee"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncCommittee"
 					}
 				},
 				{
 					name: "current_sync_committee_branch"
-					type: {
+					def: {
 						type:   "vector"
 						size: 5
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -1078,27 +1065,27 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "attested_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "LightClientHeader"
 					}
 				},
 				{
 					name: "finalized_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "LightClientHeader"
 					}
 				},
 				{
 					name: "finality_branch"
-					type: {
+					def: {
 						type:   "vector"
 						size: 6
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -1108,14 +1095,14 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "sync_aggregate"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncAggregate"
 					}
 				},
 				{
 					name: "signature_slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}
@@ -1125,21 +1112,21 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "attested_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "LightClientHeader"
 					}
 				},
 				{
 					name: "sync_aggregate"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncAggregate"
 					}
 				},
 				{
 					name: "signature_slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}
@@ -1149,27 +1136,27 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "attested_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "LightClientHeader"
 					}
 				},
 				{
 					name: "next_sync_committee"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncCommittee"
 					}
 				},
 				{
 					name: "next_sync_committee_branch"
-					type: {
+					def: {
 						type:   "vector"
 						size: 5
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -1179,20 +1166,20 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "finalized_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "LightClientHeader"
 					}
 				},
 				{
 					name: "finality_branch"
-					type: {
+					def: {
 						type:   "vector"
 						size: 6
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -1202,14 +1189,14 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "sync_aggregate"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncAggregate"
 					}
 				},
 				{
 					name: "signature_slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}
@@ -1219,45 +1206,45 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "randao_reveal"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
 				},
 				{
 					name: "eth1_data"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Eth1Data"
 					}
 				},
 				{
 					name: "graffiti"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "proposer_slashings"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "ProposerSlashing"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "ProposerSlashing"}},]}
 				},
 				{
 					name: "attester_slashings"
-					type: {type: "list", limit: 2, children: [{name: "element", type: {type: "ref", ref: "AttesterSlashing"}},]}
+					def: {type: "list", limit: 2, children: [{name: "element", def: {type: "ref", ref: "AttesterSlashing"}},]}
 				},
 				{
 					name: "attestations"
-					type: {type: "list", limit: 128, children: [{name: "element", type: {type: "ref", ref: "Attestation"}},]}
+					def: {type: "list", limit: 128, children: [{name: "element", def: {type: "ref", ref: "Attestation"}},]}
 				},
 				{
 					name: "deposits"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "Deposit"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "Deposit"}},]}
 				},
 				{
 					name: "voluntary_exits"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "SignedVoluntaryExit"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "SignedVoluntaryExit"}},]}
 				},
 				{
 					name: "sync_aggregate"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncAggregate"
 					}
@@ -1270,29 +1257,29 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "parent_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "state_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "body"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockBodyAltair"
 					}
@@ -1305,14 +1292,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "message"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockAltair"
 					}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -1325,39 +1312,39 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "genesis_time"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "genesis_validators_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "fork"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Fork"
 					}
 				},
 				{
 					name: "latest_block_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockHeader"
 					}
 				},
 				{
 					name: "block_roots"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -1367,13 +1354,13 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "state_roots"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -1383,13 +1370,13 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "historical_roots"
-					type: {
+					def: {
 						type:      "list"
 						limit: 16777216
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -1399,36 +1386,36 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "eth1_data"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Eth1Data"
 					}
 				},
 				{
 					name: "eth1_data_votes"
-					type: {type: "list", limit: 2048, children: [{name: "element", type: {type: "ref", ref: "Eth1Data"}},]}
+					def: {type: "list", limit: 2048, children: [{name: "element", def: {type: "ref", ref: "Eth1Data"}},]}
 				},
 				{
 					name: "eth1_deposit_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "validators"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "ref", ref: "Validator"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "ref", ref: "Validator"}},]}
 				},
 				{
 					name: "balances"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "uint64"}},]}
 				},
 				{
 					name: "randao_mixes"
-					type: {
+					def: {
 						type:   "vector"
 						size: 65536
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -1438,13 +1425,13 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "slashings"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "uint64"
 								}
 							},
@@ -1453,51 +1440,51 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "previous_epoch_participation"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "current_epoch_participation"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "justification_bits"
-					type: {type: "vector", size: 1, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 1, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "previous_justified_checkpoint"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
 				},
 				{
 					name: "current_justified_checkpoint"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
 				},
 				{
 					name: "finalized_checkpoint"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
 				},
 				{
 					name: "inactivity_scores"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "uint64"}},]}
 				},
 				{
 					name: "current_sync_committee"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncCommittee"
 					}
 				},
 				{
 					name: "next_sync_committee"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncCommittee"
 					}
@@ -1510,26 +1497,26 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "beacon_block_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "subcommittee_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "aggregation_bits"
-					type: {type: "vector", size: 16, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 16, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -1542,18 +1529,18 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "aggregator_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "contribution"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncCommitteeContribution"
 					}
 				},
 				{
 					name: "selection_proof"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -1566,14 +1553,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "message"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "ContributionAndProof"
 					}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -1586,22 +1573,22 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "beacon_block_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "validator_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -1614,11 +1601,11 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "subcommittee_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}
@@ -1630,62 +1617,59 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "parent_hash"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "fee_recipient"
-					type: {type: "vector", size: 20, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 20, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "state_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "receipts_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "logs_bloom"
-					type: {type: "vector", size: 256, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 256, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "prev_randao"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "block_number"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "gas_limit"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "gas_used"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "timestamp"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "extra_data"
-					type: {type: "list", limit: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "list", limit: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "base_fee_per_gas"
-					type: {
-						type: "ref"
-						ref:  "Uint256"
-					}
+					def: {type: "uint256"}
 				},
 				{
 					name: "block_hash"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "transactions_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 			]
 		}
@@ -1695,74 +1679,71 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "parent_hash"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "fee_recipient"
-					type: {type: "vector", size: 20, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 20, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "state_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "receipts_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "logs_bloom"
-					type: {type: "vector", size: 256, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 256, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "prev_randao"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "block_number"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "gas_limit"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "gas_used"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "timestamp"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "extra_data"
-					type: {type: "list", limit: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "list", limit: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "base_fee_per_gas"
-					type: {
-						type: "ref"
-						ref:  "Uint256"
-					}
+					def: {type: "uint256"}
 				},
 				{
 					name: "block_hash"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "transactions"
-					type: {
+					def: {
 						type:      "list"
 						limit: 1048576
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type:      "list"
 									limit: 1073741824
 									children: [
 										{
 											name: "element"
-											type: {
+											def: {
 												type: "uint8"
 											}
 										},
@@ -1780,52 +1761,52 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "randao_reveal"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
 				},
 				{
 					name: "eth1_data"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Eth1Data"
 					}
 				},
 				{
 					name: "graffiti"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "proposer_slashings"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "ProposerSlashing"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "ProposerSlashing"}},]}
 				},
 				{
 					name: "attester_slashings"
-					type: {type: "list", limit: 2, children: [{name: "element", type: {type: "ref", ref: "AttesterSlashing"}},]}
+					def: {type: "list", limit: 2, children: [{name: "element", def: {type: "ref", ref: "AttesterSlashing"}},]}
 				},
 				{
 					name: "attestations"
-					type: {type: "list", limit: 128, children: [{name: "element", type: {type: "ref", ref: "Attestation"}},]}
+					def: {type: "list", limit: 128, children: [{name: "element", def: {type: "ref", ref: "Attestation"}},]}
 				},
 				{
 					name: "deposits"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "Deposit"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "Deposit"}},]}
 				},
 				{
 					name: "voluntary_exits"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "SignedVoluntaryExit"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "SignedVoluntaryExit"}},]}
 				},
 				{
 					name: "sync_aggregate"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncAggregate"
 					}
 				},
 				{
 					name: "execution_payload"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "ExecutionPayload"
 					}
@@ -1838,29 +1819,29 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "parent_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "state_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "body"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockBodyBellatrix"
 					}
@@ -1873,14 +1854,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "message"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockBellatrix"
 					}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -1893,52 +1874,52 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "randao_reveal"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
 				},
 				{
 					name: "eth1_data"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Eth1Data"
 					}
 				},
 				{
 					name: "graffiti"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "proposer_slashings"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "ProposerSlashing"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "ProposerSlashing"}},]}
 				},
 				{
 					name: "attester_slashings"
-					type: {type: "list", limit: 2, children: [{name: "element", type: {type: "ref", ref: "AttesterSlashing"}},]}
+					def: {type: "list", limit: 2, children: [{name: "element", def: {type: "ref", ref: "AttesterSlashing"}},]}
 				},
 				{
 					name: "attestations"
-					type: {type: "list", limit: 128, children: [{name: "element", type: {type: "ref", ref: "Attestation"}},]}
+					def: {type: "list", limit: 128, children: [{name: "element", def: {type: "ref", ref: "Attestation"}},]}
 				},
 				{
 					name: "deposits"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "Deposit"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "Deposit"}},]}
 				},
 				{
 					name: "voluntary_exits"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "SignedVoluntaryExit"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "SignedVoluntaryExit"}},]}
 				},
 				{
 					name: "sync_aggregate"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncAggregate"
 					}
 				},
 				{
 					name: "execution_payload_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "ExecutionPayloadHeader"
 					}
@@ -1951,29 +1932,29 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "parent_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "state_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "body"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BlindedBeaconBlockBody"
 					}
@@ -1986,14 +1967,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "message"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BlindedBeaconBlock"
 					}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -2006,39 +1987,39 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "genesis_time"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "genesis_validators_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "fork"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Fork"
 					}
 				},
 				{
 					name: "latest_block_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockHeader"
 					}
 				},
 				{
 					name: "block_roots"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -2048,13 +2029,13 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "state_roots"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -2064,19 +2045,19 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "historical_roots"
-					type: {
+					def: {
 						type:      "list"
 						limit: 16777216
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type:      "list"
 									limit: 32
 									children: [
 										{
 											name: "element"
-											type: {
+											def: {
 												type: "uint8"
 											}
 										},
@@ -2088,36 +2069,36 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "eth1_data"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Eth1Data"
 					}
 				},
 				{
 					name: "eth1_data_votes"
-					type: {type: "list", limit: 2048, children: [{name: "element", type: {type: "ref", ref: "Eth1Data"}},]}
+					def: {type: "list", limit: 2048, children: [{name: "element", def: {type: "ref", ref: "Eth1Data"}},]}
 				},
 				{
 					name: "eth1_deposit_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "validators"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "ref", ref: "Validator"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "ref", ref: "Validator"}},]}
 				},
 				{
 					name: "balances"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "uint64"}},]}
 				},
 				{
 					name: "randao_mixes"
-					type: {
+					def: {
 						type:   "vector"
 						size: 65536
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -2127,13 +2108,13 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "slashings"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "uint64"
 								}
 							},
@@ -2142,58 +2123,58 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "previous_epoch_participation"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "current_epoch_participation"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "justification_bits"
-					type: {type: "vector", size: 1, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 1, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "previous_justified_checkpoint"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
 				},
 				{
 					name: "current_justified_checkpoint"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
 				},
 				{
 					name: "finalized_checkpoint"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
 				},
 				{
 					name: "inactivity_scores"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "uint64"}},]}
 				},
 				{
 					name: "current_sync_committee"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncCommittee"
 					}
 				},
 				{
 					name: "next_sync_committee"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncCommittee"
 					}
 				},
 				{
 					name: "latest_execution_payload_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "ExecutionPayloadHeader"
 					}
@@ -2208,19 +2189,19 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "validator_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "address"
-					type: {type: "vector", size: 20, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 20, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "amount"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}
@@ -2230,18 +2211,18 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "validator_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "from_bls_pubkey"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BLSPubkey"
 					}
 				},
 				{
 					name: "to_execution_address"
-					type: {type: "vector", size: 20, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 20, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 			]
 		}
@@ -2251,14 +2232,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "message"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BLSToExecutionChange"
 					}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -2271,14 +2252,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "block_summary_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "state_summary_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
@@ -2291,66 +2272,63 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "parent_hash"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "fee_recipient"
-					type: {type: "vector", size: 20, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 20, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "state_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "receipts_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "logs_bloom"
-					type: {type: "vector", size: 256, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 256, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "prev_randao"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "block_number"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "gas_limit"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "gas_used"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "timestamp"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "extra_data"
-					type: {type: "list", limit: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "list", limit: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "base_fee_per_gas"
-					type: {
-						type: "ref"
-						ref:  "Uint256"
-					}
+					def: {type: "uint256"}
 				},
 				{
 					name: "block_hash"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "transactions_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "withdrawals_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 			]
 		}
@@ -2360,74 +2338,71 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "parent_hash"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "fee_recipient"
-					type: {type: "vector", size: 20, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 20, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "state_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "receipts_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "logs_bloom"
-					type: {type: "vector", size: 256, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 256, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "prev_randao"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "block_number"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "gas_limit"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "gas_used"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "timestamp"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "extra_data"
-					type: {type: "list", limit: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "list", limit: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "base_fee_per_gas"
-					type: {
-						type: "ref"
-						ref:  "Uint256"
-					}
+					def: {type: "uint256"}
 				},
 				{
 					name: "block_hash"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "transactions"
-					type: {
+					def: {
 						type:      "list"
 						limit: 1048576
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type:      "list"
 									limit: 1073741824
 									children: [
 										{
 											name: "element"
-											type: {
+											def: {
 												type: "uint8"
 											}
 										},
@@ -2439,7 +2414,7 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "withdrawals"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "Withdrawal"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "Withdrawal"}},]}
 				},
 			]
 		}
@@ -2449,59 +2424,59 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "randao_reveal"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
 				},
 				{
 					name: "eth1_data"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Eth1Data"
 					}
 				},
 				{
 					name: "graffiti"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "proposer_slashings"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "ProposerSlashing"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "ProposerSlashing"}},]}
 				},
 				{
 					name: "attester_slashings"
-					type: {type: "list", limit: 2, children: [{name: "element", type: {type: "ref", ref: "AttesterSlashing"}},]}
+					def: {type: "list", limit: 2, children: [{name: "element", def: {type: "ref", ref: "AttesterSlashing"}},]}
 				},
 				{
 					name: "attestations"
-					type: {type: "list", limit: 128, children: [{name: "element", type: {type: "ref", ref: "Attestation"}},]}
+					def: {type: "list", limit: 128, children: [{name: "element", def: {type: "ref", ref: "Attestation"}},]}
 				},
 				{
 					name: "deposits"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "Deposit"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "Deposit"}},]}
 				},
 				{
 					name: "voluntary_exits"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "SignedVoluntaryExit"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "SignedVoluntaryExit"}},]}
 				},
 				{
 					name: "sync_aggregate"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncAggregate"
 					}
 				},
 				{
 					name: "execution_payload"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "ExecutionPayloadCapella"
 					}
 				},
 				{
 					name: "bls_to_execution_changes"
-					type: {type: "list", limit: 16, children: [{name: "element", type: {type: "ref", ref: "SignedBLSToExecutionChange"}},]}
+					def: {type: "list", limit: 16, children: [{name: "element", def: {type: "ref", ref: "SignedBLSToExecutionChange"}},]}
 				},
 			]
 		}
@@ -2511,29 +2486,29 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "proposer_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "parent_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "state_root"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Root"
 					}
 				},
 				{
 					name: "body"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockBodyCapella"
 					}
@@ -2546,14 +2521,14 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "message"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockCapella"
 					}
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Signature"
 					}
@@ -2566,39 +2541,39 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "genesis_time"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "genesis_validators_root"
-					type: {type: "vector", size: 32, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 32, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "fork"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Fork"
 					}
 				},
 				{
 					name: "latest_block_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockHeader"
 					}
 				},
 				{
 					name: "block_roots"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -2608,13 +2583,13 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "state_roots"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -2624,19 +2599,19 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "historical_roots"
-					type: {
+					def: {
 						type:      "list"
 						limit: 16777216
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type:      "list"
 									limit: 32
 									children: [
 										{
 											name: "element"
-											type: {
+											def: {
 												type: "uint8"
 											}
 										},
@@ -2648,36 +2623,36 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "eth1_data"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Eth1Data"
 					}
 				},
 				{
 					name: "eth1_data_votes"
-					type: {type: "list", limit: 2048, children: [{name: "element", type: {type: "ref", ref: "Eth1Data"}},]}
+					def: {type: "list", limit: 2048, children: [{name: "element", def: {type: "ref", ref: "Eth1Data"}},]}
 				},
 				{
 					name: "eth1_deposit_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "validators"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "ref", ref: "Validator"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "ref", ref: "Validator"}},]}
 				},
 				{
 					name: "balances"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "uint64"}},]}
 				},
 				{
 					name: "randao_mixes"
-					type: {
+					def: {
 						type:   "vector"
 						size: 65536
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -2687,13 +2662,13 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "slashings"
-					type: {
+					def: {
 						type:   "vector"
 						size: 8192
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "uint64"
 								}
 							},
@@ -2702,73 +2677,73 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "previous_epoch_participation"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "current_epoch_participation"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "justification_bits"
-					type: {type: "vector", size: 1, children: [{name: "element", type: {type: "uint8"}},]}
+					def: {type: "vector", size: 1, children: [{name: "element", def: {type: "uint8"}},]}
 				},
 				{
 					name: "previous_justified_checkpoint"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
 				},
 				{
 					name: "current_justified_checkpoint"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
 				},
 				{
 					name: "finalized_checkpoint"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "Checkpoint"
 					}
 				},
 				{
 					name: "inactivity_scores"
-					type: {type: "list", limit: 1099511627776, children: [{name: "element", type: {type: "uint64"}},]}
+					def: {type: "list", limit: 4294967296, children: [{name: "element", def: {type: "uint64"}},]}
 				},
 				{
 					name: "current_sync_committee"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncCommittee"
 					}
 				},
 				{
 					name: "next_sync_committee"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncCommittee"
 					}
 				},
 				{
 					name: "latest_execution_payload_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "ExecutionPayloadHeaderCapella"
 					}
 				},
 				{
 					name: "next_withdrawal_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "next_withdrawal_validator_index"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 				{
 					name: "historical_summaries"
-					type: {type: "list", limit: 16777216, children: [{name: "element", type: {type: "ref", ref: "HistoricalSummary"}},]}
+					def: {type: "list", limit: 16777216, children: [{name: "element", def: {type: "ref", ref: "HistoricalSummary"}},]}
 				},
 			]
 		}
@@ -2778,27 +2753,27 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "beacon"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "BeaconBlockHeader"
 					}
 				},
 				{
 					name: "execution"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "ExecutionPayloadHeaderCapella"
 					}
 				},
 				{
 					name: "execution_branch"
-					type: {
+					def: {
 						type:   "vector"
 						size: 4
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -2814,27 +2789,27 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "LightClientHeaderCapella"
 					}
 				},
 				{
 					name: "current_sync_committee"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncCommittee"
 					}
 				},
 				{
 					name: "current_sync_committee_branch"
-					type: {
+					def: {
 						type:   "vector"
 						size: 5
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -2850,27 +2825,27 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "attested_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "LightClientHeaderCapella"
 					}
 				},
 				{
 					name: "finalized_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "LightClientHeaderCapella"
 					}
 				},
 				{
 					name: "finality_branch"
-					type: {
+					def: {
 						type:   "vector"
 						size: 6
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -2880,14 +2855,14 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "sync_aggregate"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncAggregate"
 					}
 				},
 				{
 					name: "signature_slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}
@@ -2897,21 +2872,21 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "attested_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "LightClientHeaderCapella"
 					}
 				},
 				{
 					name: "sync_aggregate"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncAggregate"
 					}
 				},
 				{
 					name: "signature_slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}
@@ -2921,27 +2896,27 @@ BeaconChain: cuessz.#Schema & {
 			children: [
 				{
 					name: "attested_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "LightClientHeaderCapella"
 					}
 				},
 				{
 					name: "next_sync_committee"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncCommittee"
 					}
 				},
 				{
 					name: "next_sync_committee_branch"
-					type: {
+					def: {
 						type:   "vector"
 						size: 5
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -2951,20 +2926,20 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "finalized_header"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "LightClientHeaderCapella"
 					}
 				},
 				{
 					name: "finality_branch"
-					type: {
+					def: {
 						type:   "vector"
 						size: 6
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Root"
 								}
@@ -2974,14 +2949,14 @@ BeaconChain: cuessz.#Schema & {
 				},
 				{
 					name: "sync_aggregate"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "SyncAggregate"
 					}
 				},
 				{
 					name: "signature_slot"
-					type: {type: "uint64"}
+					def: {type: "uint64"}
 				},
 			]
 		}

@@ -11,7 +11,7 @@ Zoo: cuessz.#Schema & {
 		authors: ["gfx labs"]
 	}
 
-	types: {
+	defs: {
 		// Basic type aliases for clarity
 		bytes32: {
 			type: "vector"
@@ -19,7 +19,7 @@ Zoo: cuessz.#Schema & {
 			children: [
 				{
 					name: "element"
-					type: {
+					def: {
 						type: "uint8"
 					}
 				},
@@ -32,7 +32,7 @@ Zoo: cuessz.#Schema & {
 			children: [
 				{
 					name: "element"
-					type: {
+					def: {
 						type: "uint8"
 					}
 				},
@@ -45,7 +45,7 @@ Zoo: cuessz.#Schema & {
 			children: [
 				{
 					name: "element"
-					type: {
+					def: {
 						type: "uint8"
 					}
 				},
@@ -58,14 +58,14 @@ Zoo: cuessz.#Schema & {
 			children: [
 				{
 					name: "epoch"
-					type: {
+					def: {
 						type: "uint64"
 					}
 					description: "Timestamp epoch of clock-in"
 				},
 				{
 					name: "bio_id_scan"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "bytes32"
 					}
@@ -73,7 +73,7 @@ Zoo: cuessz.#Schema & {
 				},
 				{
 					name: "poo_log_bits"
-					type: {
+					def: {
 						type:  "bitlist"
 						limit: 32
 					}
@@ -81,7 +81,7 @@ Zoo: cuessz.#Schema & {
 				},
 				{
 					name: "wash_log_bits"
-					type: {
+					def: {
 						type: "bitvector"
 						size: 32
 					}
@@ -89,7 +89,7 @@ Zoo: cuessz.#Schema & {
 				},
 				{
 					name: "signature"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "bytes96"
 					}
@@ -104,7 +104,7 @@ Zoo: cuessz.#Schema & {
 			children: [
 				{
 					name: "id_hash"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "bytes32"
 					}
@@ -112,7 +112,7 @@ Zoo: cuessz.#Schema & {
 				},
 				{
 					name: "public_key"
-					type: {
+					def: {
 						type: "ref"
 						ref:  "bytes48"
 					}
@@ -120,13 +120,13 @@ Zoo: cuessz.#Schema & {
 				},
 				{
 					name: "clock_in_records"
-					type: {
+					def: {
 						type:  "list"
-						limit: 4294967296 // 2^32
+						limit: 4294967296
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "ClockInRecords"
 								}
@@ -137,7 +137,7 @@ Zoo: cuessz.#Schema & {
 				},
 				{
 					name: "vaccinated"
-					type: {
+					def: {
 						type: "boolean"
 					}
 					description: "Vaccination status"
@@ -151,13 +151,13 @@ Zoo: cuessz.#Schema & {
 			children: [
 				{
 					name: "animals"
-					type: {
+					def: {
 						type: "vector"
 						size: 3
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "ref"
 									ref:  "Animal"
 								}

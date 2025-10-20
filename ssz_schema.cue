@@ -1,29 +1,32 @@
 package cuessz
 
-import ( "list"
-
-	// SSZ Type System Definition
-	// This schema defines the structure for declaring SSZ types that can be used
-	// for code generation across multiple languages.
+import (
+	"list"
 )
 
-// Type represents an SSZ type definition
-#Type: {
-	type: "uint8" | "uint16" | "uint32" | "uint64" | "uint128" | "uint256" | "boolean" |
-		"container" | "progressive_container" | "vector" | "list" |
-		"bitvector" | "bitlist" | "union" | "ref"
+// SSZ uses 4-byte (uint32) length prefixes for variable-length types
+#MaxSSZSize: 4294967296 // 2^32
+
+// SSZType defines all valid SSZ type names
+#SSZType: "uint8" | "uint16" | "uint32" | "uint64" | "uint128" | "uint256" | "boolean" |
+	"container" | "progressive_container" | "vector" | "list" |
+	"bitvector" | "bitlist" | "union" | "ref"
+
+// Def represents an SSZ type definition
+#Def: {
+	type: #SSZType
 
 	// Optional documentation for this type
 	description?: string
 
-	// this is the size for vectors and bitvectors
+	// this is the size for vectors and bitvectors (max uint32 due to 4-byte SSZ prefix)
 	if list.Contains(["vector", "bitvector"], type) {
-		size: uint & >0
+		size: uint & >0 & <=#MaxSSZSize
 	}
 
-	// this is the max length for lists and bitlists
+	// this is the max length for lists and bitlists (max uint32 due to 4-byte SSZ prefix)
 	if list.Contains(["list", "bitlist"], type) {
-		limit: uint & >0
+		limit: uint & >0 & <=#MaxSSZSize
 	}
 
 	// container, progressive_container, vector, list, union have children
@@ -53,7 +56,7 @@ import ( "list"
 // Field represents a named field within a container (used in children arrays)
 #Field: {
 	name:         string
-	type:         #Type
+	def:          #Def
 	description?: string // Optional documentation for this field
 }
 
@@ -62,8 +65,8 @@ import ( "list"
 	// Schema version for compatibility tracking
 	version: string | *"1.0.0"
 
-	// type definitions ( the actuall busuness)
-	types: {[string]: #Type}
+	// type definitions (the actual business)
+	defs: {[string]: #Def}
 
 	// Optional metadata
 	metadata?: {
@@ -71,43 +74,4 @@ import ( "list"
 		description?: string
 		authors?: [...string]
 	}
-
-	// Validate all type references exist
-	// This ensures compile-time type safety for refs
-	for typeName, t in types {
-		// Check top-level type refs
-		if t.type == "ref" {
-			if t.ref != _|_ {
-				// Require the referenced type to exist
-				types: "\(t.ref)": _
-			}
-		}
-
-		// Check refs in children
-		if t.children != _|_ {
-			for i, child in t.children {
-				if child.type.type == "ref" {
-					if child.type.ref != _|_ {
-						// Require the referenced type to exist
-						types: "\(child.type.ref)": _
-					}
-				}
-
-				// Recursively check children of children (for nested containers)
-				if child.type.children != _|_ {
-					for j, grandchild in child.type.children {
-						if grandchild.type.type == "ref" {
-							if grandchild.type.ref != _|_ {
-								// Require the referenced type to exist
-								types: "\(grandchild.type.ref)": _
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	// NOTE: Recursive reference checking (cycle detection) is implemented
-	// in Go-level validation, as CUE cannot perform arbitrary-depth graph traversal
 }

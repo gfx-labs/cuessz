@@ -12,7 +12,7 @@ Progressive: cuessz.#Schema & {
 		authors: ["gfx labs"]
 	}
 
-	types: {
+	defs: {
 		// UserProfile: Simple stable container that can be extended in future versions
 		// This demonstrates the basic stable container feature
 		UserProfile: {
@@ -22,20 +22,20 @@ Progressive: cuessz.#Schema & {
 			children: [
 				{
 					name: "id"
-					type: {
+					def: {
 						type: "uint64"
 					}
 					description: "Required: User ID"
 				},
 				{
 					name: "username"
-					type: {
+					def: {
 						type: "vector"
 						size: 32
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "uint8"
 								}
 							},
@@ -45,13 +45,13 @@ Progressive: cuessz.#Schema & {
 				},
 				{
 					name: "email"
-					type: {
+					def: {
 						type: "vector"
 						size: 64
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "uint8"
 								}
 							},
@@ -61,7 +61,7 @@ Progressive: cuessz.#Schema & {
 				},
 				{
 					name: "verified"
-					type: {
+					def: {
 						type: "boolean"
 					}
 					description: "Optional: Verification status (added in v2)"
@@ -81,13 +81,13 @@ Progressive: cuessz.#Schema & {
 			children: [
 				{
 					name: "text"
-					type: {
+					def: {
 						type: "vector"
 						size: 256
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "uint8"
 								}
 							},
@@ -97,7 +97,7 @@ Progressive: cuessz.#Schema & {
 				},
 				{
 					name: "timestamp"
-					type: {
+					def: {
 						type: "uint64"
 					}
 					description: "Timestamp (at merkle position 2)"
@@ -114,13 +114,13 @@ Progressive: cuessz.#Schema & {
 			children: [
 				{
 					name: "text"
-					type: {
+					def: {
 						type: "vector"
 						size: 256
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "uint8"
 								}
 							},
@@ -130,14 +130,14 @@ Progressive: cuessz.#Schema & {
 				},
 				{
 					name: "priority"
-					type: {
+					def: {
 						type: "uint8"
 					}
 					description: "Priority level (at merkle position 1 - was reserved)"
 				},
 				{
 					name: "timestamp"
-					type: {
+					def: {
 						type: "uint64"
 					}
 					description: "Timestamp (at merkle position 2)"
@@ -153,21 +153,21 @@ Progressive: cuessz.#Schema & {
 			children: [
 				{
 					name: "max_size"
-					type: {
+					def: {
 						type: "uint64"
 					}
 					description: "Maximum size limit"
 				},
 				{
 					name: "timeout"
-					type: {
+					def: {
 						type: "uint64"
 					}
 					description: "Timeout in seconds"
 				},
 				{
 					name: "enabled"
-					type: {
+					def: {
 						type: "boolean"
 					}
 					description: "Whether feature is enabled"
@@ -185,13 +185,13 @@ Progressive: cuessz.#Schema & {
 			children: [
 				{
 					name: "from"
-					type: {
+					def: {
 						type: "vector"
 						size: 32
 						children: [
 							{
 								name: "element"
-								type: {
+								def: {
 									type: "uint8"
 								}
 							},
@@ -201,7 +201,7 @@ Progressive: cuessz.#Schema & {
 				},
 				{
 					name: "amount"
-					type: {
+					def: {
 						type: "uint64"
 					}
 					description: "Amount (merkle position 3)"
